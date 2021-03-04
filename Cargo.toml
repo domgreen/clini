@@ -1,5 +1,5 @@
 [package]
-name = "hinitus_finitus"
+name = "clini"
 version = "0.1.0"
 authors = ["Dominic Green <dominicgreen1@gmail.com>"]
 edition = "2018"
