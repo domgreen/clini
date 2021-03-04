@@ -1,4 +1,5 @@
-H**ini**tus F**ini**tus
+clini
+- basic ini file editing via command line
 
 Inspo:
 - https://www.horstmuc.de/wbat32.htm
@@ -7,19 +8,13 @@ Inspo:
 - https://github.com/zonyitoo/rust-ini
 - https://github.com/mexili/configparser-rs
 
-TODO:
+Done:
 - get
-  - read value / section
-- set 
-  - value 
-  - section
-    - add if not exist
-  - write to new file
+  - value
+- set
+  - value
 - del
   - value
-  - section
-- fmt
-  - order sections
-  - order values
-- comments?
 
+TODO:
+- code review
