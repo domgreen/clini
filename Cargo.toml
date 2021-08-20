@@ -1,7 +1,7 @@
 [package]
 name = "clini"
 version = "0.1.0"
-authors = ["Dominic Green <mail@domgreen.com>"]
+authors = ["Dominic Green <dominicgreen1@gmail.com>"]
 edition = "2018"
 license = "MIT"
 description = "clini is a simple tool to do basic modification of ini files"
