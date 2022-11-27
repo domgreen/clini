@@ -20,6 +20,9 @@ struct EntryArgs {
     /// The `key=` in a file
     #[arg(long, short)]
     key: String,
+    /// If escape sequences with `\` should be interpreted or ignored and taken literally
+    #[arg(long, short)]
+    ignore_escape: bool,
     /// Path to the input file
     input: String,
 }
@@ -68,10 +71,23 @@ fn main() {
 
 impl EntryArgs {
     fn load(&self) -> Ini {
-        Ini::load_from_file(&self.input).unwrap_or_else(|error| {
+        let file = if self.ignore_escape {
+            Ini::load_from_file_noescape(&self.input)
+        } else {
+            Ini::load_from_file(&self.input)
+        };
+        file.unwrap_or_else(|error| {
             println!("Error: {}", error);
             std::process::exit(exitcode::DATAERR);
         })
+    }
+
+    fn write(&self, ini: &Ini) -> Result<(), io::Error> {
+        if self.ignore_escape {
+            ini.write_to_file_policy(&self.input, ini::EscapePolicy::Nothing)
+        } else {
+            ini.write_to_file(&self.input)
+        }
     }
 }
 
@@ -79,7 +95,7 @@ fn set_val(entry: &EntryArgs, value: &str) -> Result<(), io::Error> {
     let mut conf: Ini = entry.load();
     conf.with_section(Some(&entry.section))
         .set(&entry.key, value);
-    conf.write_to_file(&entry.input)
+    entry.write(&conf)
 }
 
 fn get_val(entry: &EntryArgs) -> Option<String> {
@@ -91,5 +107,5 @@ fn get_val(entry: &EntryArgs) -> Option<String> {
 fn del_val(entry: &EntryArgs) -> Result<(), io::Error> {
     let mut conf: Ini = entry.load();
     conf.with_section(Some(&entry.section)).delete(&entry.key);
-    conf.write_to_file(&entry.input)
+    entry.write(&conf)
 }
